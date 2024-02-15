@@ -92,8 +92,8 @@ input_weight = sample_raw_mat[sample_raw_mat['Tap_Or_Lot'] == sample_heat_for_ra
 
 input_metal_wise_weight = sample_input.iloc[0,0:30]*input_weight/100
 
-df_heat = pd.DataFrame(input_metal_wise_weight)
-df_heat_ratio = pd.DataFrame(sample_input.iloc[0,0:30])
+df_heat = pd.DataFrame(input_metal_wise_weight) # all weights for each heat
+df_heat_ratio = pd.DataFrame(sample_input.iloc[0,0:30]) # all ratios for each heat
 
 # additives weight computation. For each additive, get their weight, multiple with ratios in heat raw material ctd
 
@@ -128,27 +128,6 @@ df_heat.to_csv('sample_heat_calc_actuals.csv')
 
 import pygad
 import numpy as np
-
-"""
-Given these 2 functions:
-    y1 = f(w1:w6) = w1x1 + w2x2 + w3x3 + w4x4 + w5x5 + 6wx6
-    y2 = f(w1:w6) = w1x7 + w2x8 + w3x9 + w4x10 + w5x11 + 6wx12
-    where (x1,x2,x3,x4,x5,x6)=(4,-2,3.5,5,-11,-4.7) and y=50
-    and   (x7,x8,x9,x10,x11,x12)=(-2,0.7,-9,1.4,3,5) and y=30
-What are the best values for the 6 weights (w1 to w6)? We are going to use the genetic algorithm to optimize these 2 functions.
-This is a multi-objective optimization problem.
-
-PyGAD considers the problem as multi-objective if the fitness function returns:
-    1) List.
-    2) Or tuple.
-    3) Or numpy.ndarray.
-"""
-
-function_inputs1 = [4,-2,3.5,5,-11,-4.7] # Function 1 inputs.
-function_inputs2 = [-2,0.7,-9,1.4,3,5] # Function 2 inputs.
-desired_output1 = 50 # Function 1 output.
-desired_output2 = 30 # Function 2 output.
-
 
 
 
@@ -250,7 +229,3 @@ plt.show()
 print(f"Parameters of the best solution : {solution}")
 print(f"Fitness value of the best solution = {np.round(solution_fitness,2)}")
 
-prediction = numpy.sum(numpy.array(function_inputs1)*solution)
-print(f"Predicted output 1 based on the best solution : {prediction}")
-prediction = numpy.sum(numpy.array(function_inputs2)*solution)
-print(f"Predicted output 2 based on the best solution : {prediction}")
